@@ -20,7 +20,8 @@ class ObservationConverterJob(args: Args) extends Job(args) {
 
   TypedPipe.from(TextLine(args("input")))
     .flatMap { line =>
-      val fields = line.split(',')
+      // if there are more than 5 elements, the rest will be mapped to the 6th
+      val fields = line.split(",", 6).map(_.trim)
       if(fields.length < 5) {
         discardedCount.inc
         Iterator()
